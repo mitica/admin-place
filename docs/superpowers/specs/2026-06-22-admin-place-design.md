@@ -6,9 +6,10 @@
 ## Purpose
 
 `admin-place` is a repository that stores and exposes structured administrative
-geography data in a simple, fast-to-read format. It holds a three-level
-hierarchy — **country → region → locality** — as committed JSON files, plus the
-TypeScript tooling that generates and validates those files.
+geography data in a simple, fast-to-read format. It holds a **variable-depth**
+administrative hierarchy modelled on GeoNames — country → ADM1 → ADM2 → … →
+populated places (localities) — as committed JSON files, plus the TypeScript
+tooling that generates and validates those files.
 
 The data files are the product: they are committed to git and directly
 accessible via GitHub raw URLs. The owner periodically runs the generator,
@@ -21,12 +22,14 @@ later is straightforward and intentionally deferred (YAGNI).
 ## Scope
 
 **In scope**
-- Canonical JSON data files for countries, regions, localities.
+
+- Canonical JSON data files for countries, admin divisions (any depth), localities.
 - A TypeScript generator that produces those files from a pluggable data source.
 - A validator that checks committed data against schemas and referential integrity.
 - A working sample source so the pipeline runs end-to-end out of the box.
 
 **Out of scope (for now)**
+
 - Publishing to npm or any other registry.
 - Language-specific packages (Python, etc.).
 - CSV / NDJSON output formats (JSON only).
@@ -34,28 +37,37 @@ later is straightforward and intentionally deferred (YAGNI).
 
 ## Data model
 
-The hierarchy maps to GIS administrative levels:
+The hierarchy follows GeoNames and has **variable depth**: different countries
+have different numbers of administrative levels.
 
-| Level | Entity | ID scheme | Example |
-|-------|--------|-----------|---------|
-| admin0 | Country | ISO 3166-1 alpha-2 | `"US"`, `"RO"` |
-| admin1 | Region | ISO 3166-2 | `"US-CA"`, `"RO-B"` |
-| admin2 | Locality | source / generated | provider-specific |
+| Entity        | What                       | ID scheme                      | Example                  |
+| ------------- | -------------------------- | ------------------------------ | ------------------------ |
+| Country       | nation (admin0)            | ISO 3166-1 alpha-2             | `"US"`, `"AD"`           |
+| AdminDivision | any admin level ADM1..ADM5 | dot-concatenated GeoNames code | `"US.CA"`, `"US.CA.037"` |
+| Locality      | populated place            | GeoNames geonameId (as string) | `"5368361"`              |
 
-Every entity starts as exactly:
+### Schemas (Zod = single source of truth)
 
 ```ts
-{ id: string; name: string }
+Country       { id, name }
+AdminDivision { id, name, level, parentId }   // level ∈ 1..5
+Locality      { id, name, parentId }
 ```
 
-**Parent relationships are encoded by file path, not duplicated inside records.**
-Every record in `regions/US.json` belongs to country `US`; every record in
-`localities/US/US-CA.json` belongs to region `US-CA`. This keeps files minimal
-and avoids redundant parent keys.
+- All ids are strings. Every record is validated against its Zod schema before
+  it is written.
+- `level` is the admin depth (1 = ADM1, …, 5 = ADM5). A country with only ADM1
+  simply has no level-2 records/files.
+- `parentId` makes the hierarchy explicit (path alone cannot express which ADM1
+  an ADM2 belongs to):
+  - An **ADM1** division's `parentId` is its **country id** (`"US"`).
+  - A deeper division's `parentId` is its parent admin id (`"US.CA"`).
+  - A **locality**'s `parentId` is its **deepest** parent admin division id, or
+    the country id if it is attached directly to the country.
 
-**Extensibility:** entity shapes are defined as Zod schemas (see below). Adding a
-field (e.g. `iso3`, `lat`, `population`) means editing one schema; the inferred
-TypeScript type, the generator's validation, and the validator all pick it up.
+**Extensibility:** adding a field (e.g. `lat`, `population`, `iso2`) means
+editing one Zod schema; the inferred TypeScript type, the generator's validation,
+and the validator all pick it up.
 
 ## Repository structure
 
@@ -63,100 +75,119 @@ TypeScript type, the generator's validation, and the validator all pick it up.
 admin-place/
 ├─ package.json            private: true, type: module, ESM, Node 22
 ├─ tsconfig.json
-├─ .gitignore .npmrc .prettierrc README.md
+├─ vitest.config.ts
+├─ .gitignore .npmrc .prettierrc .prettierignore README.md
 ├─ data/                   ← THE product: canonical JSON, GitHub-accessible
 │  ├─ countries.json       [{ id, name }, …] sorted by id
-│  ├─ regions/
-│  │  └─ {CC}.json          e.g. regions/US.json
+│  ├─ admin/
+│  │  └─ {CC}/
+│  │     ├─ 1.json          ADM1 divisions  [{ id, name, level, parentId }, …]
+│  │     ├─ 2.json          ADM2 divisions
+│  │     └─ …               up to 5.json
 │  └─ localities/
 │     └─ {CC}/
-│        └─ {REGION}.json   e.g. localities/US/US-CA.json
+│        └─ {adm1Id}.json   populated places grouped by their ADM1 ancestor
 └─ src/                    ← the generator (tooling)
    ├─ schemas/             Zod schemas + inferred TS types (source of truth)
-   │  ├─ country.ts
-   │  ├─ region.ts
-   │  ├─ locality.ts
-   │  └─ index.ts
+   │  ├─ country.ts  admin.ts  locality.ts  index.ts
    ├─ sources/
    │  ├─ source.ts         the Source interface (the seam to implement later)
    │  └─ sample.ts         a tiny built-in source for end-to-end runs
    ├─ writers/
-   │  └─ json-writer.ts    deterministic sharded JSON writer
-   ├─ paths.ts             central definition of data dir + file paths
+   │  └─ json-writer.ts    deterministic JSON writer
+   ├─ paths.ts             central data-dir + file-path resolution
+   ├─ hierarchy.ts         ADM1-ancestor resolution shared by generate + validate
    ├─ generate.ts          orchestrator: source → validate → write
    └─ validate.ts          validates committed data/ (schema + referential integrity)
 ```
 
+### File layout rules
+
+- **Countries:** a single `data/countries.json`.
+- **Admin divisions:** sharded per country, per level — `data/admin/{CC}/{level}.json`.
+- **Localities:** grouped by their **ADM1 ancestor** —
+  `data/localities/{CC}/{adm1Id}.json` (e.g. `localities/US/US.CA.json`). The
+  generator resolves the ancestor by walking `parentId` up the in-memory admin
+  index. A locality attached directly to the country (no admin level) goes in
+  `data/localities/{CC}/{CC}.json` (e.g. `localities/US/US.json`).
+- Finer locality sharding (by ADM2) is easy to add later if a file gets too big;
+  not done now (YAGNI).
+
 ## Components
 
 ### `src/schemas/` — single source of truth
-- One Zod schema per entity: `CountrySchema`, `RegionSchema`, `LocalitySchema`,
-  each `{ id: string (non-empty), name: string (non-empty) }` to start.
-- TypeScript types are `z.infer`-ed from the schemas, never hand-written.
-- `index.ts` re-exports schemas and types.
+
+- One Zod schema per entity; TypeScript types are `z.infer`-ed, never hand-written.
+- Schemas reject unknown keys (strict), empty strings, and out-of-range levels.
 
 ### `src/sources/` — the data seam
+
 - `source.ts` defines:
   ```ts
   interface Source {
     countries(): Promise<Country[]>;
-    regions(countryCode: string): Promise<Region[]>;
-    localities(countryCode: string, regionCode: string): Promise<Locality[]>;
+    adminDivisions(countryCode: string): Promise<AdminDivision[]>; // all levels
+    localities(countryCode: string): Promise<Locality[]>;
   }
   ```
-- `sample.ts` implements `Source` with 2–3 hardcoded countries, a few regions
-  each, and a few localities, so `generate` produces real files immediately.
+- `sample.ts` implements `Source` with two countries: **US** (ADM1 states + ADM2
+  counties + localities under ADM2) and **AD** (ADM1 parishes + localities under
+  ADM1). This exercises variable depth end-to-end.
 - The owner adds real sources later (e.g. `sources/geonames.ts`) implementing the
   same interface.
 
+### `src/hierarchy.ts`
+
+- `resolveAdm1AncestorId(record, index, countryId)`: walks `parentId` up to the
+  level-1 ancestor, returning the ADM1 id used for locality sharding (or the
+  country id when attached directly). Shared by the generator (to group) and the
+  validator (to check filenames).
+
 ### `src/writers/json-writer.ts` — deterministic output
-- Writes the sharded layout: `countries.json`, `regions/{CC}.json`,
-  `localities/{CC}/{REGION}.json`.
-- **Deterministic** so periodic re-runs yield minimal, reviewable git diffs:
-  - records sorted by `id`,
-  - stable object key order,
-  - 2-space indentation,
-  - trailing newline.
-- Creates parent directories as needed.
+
+- Writes records to a file with **deterministic** bytes so periodic re-runs yield
+  minimal, reviewable diffs: records sorted by `id` (codepoint order), object keys
+  sorted recursively, 2-space indent, trailing newline. Creates parent dirs.
 
 ### `src/paths.ts`
-- Single place that resolves the repo-root `data/` directory and computes file
-  paths for each entity/shard. Both `generate.ts` and `validate.ts` import from
-  here so layout lives in exactly one place.
+
+- Single place that resolves the data directory (overridable via
+  `ADMIN_PLACE_DATA_DIR`, used by tests) and computes every file path. Both
+  `generate.ts` and `validate.ts` import from here so layout lives in one place.
 
 ### `src/generate.ts` — orchestrator
-- Selects a `Source` (defaults to the sample source).
-- For each country: fetch countries → validate → write `countries.json`.
-- For each country: fetch its regions → validate → write `regions/{CC}.json`.
-- For each region: fetch its localities → validate → write
-  `localities/{CC}/{REGION}.json`.
-- Validates every record against the Zod schemas before writing; aborts on
-  invalid data.
-- Run via `pnpm generate` (`tsx src/generate.ts`).
+
+- Exposes `generate(source, options)` (testable) plus a thin CLI entry.
+- Wipes the data directory for a clean, deterministic full regeneration (guarded:
+  refuses to delete a path that is not the configured data dir).
+- `countries()` → validate → write `countries.json`.
+- Per country: `adminDivisions(cc)` → validate → write `admin/{CC}/{level}.json`
+  per level; build an id→division index.
+- Per country: `localities(cc)` → validate → resolve each one's ADM1 ancestor via
+  the index → write the grouped `localities/{CC}/{adm1Id}.json` files.
+- Aborts on any invalid record or unresolvable parent. Run via `pnpm generate`.
 
 ### `src/validate.ts` — CI gate
-- Reads the committed `data/` tree and checks:
-  - every file parses as JSON and matches its Zod schema,
-  - records are sorted by `id` and ids are unique within a file,
-  - **referential integrity**: every `regions/{CC}.json` has a matching country
-    in `countries.json`; every `localities/{CC}/{REGION}.json` corresponds to a
-    region present in `regions/{CC}.json`.
-- Exits non-zero on any failure. Run via `pnpm validate`.
+
+- Exposes `validateData(dataDir)` returning a list of problems, plus a CLI entry
+  that prints them and exits non-zero on failure.
+- Checks: every file parses and matches its Zod schema; ids unique and sorted per
+  file; `level` matches the admin filename; **referential integrity** — each
+  `parentId` resolves to a parent of the correct level in the same country, and
+  every country referenced by an `admin/` or `localities/` directory exists in
+  `countries.json`; each locality file's name equals the shared ADM1 ancestor of
+  its records. Run via `pnpm validate`.
 
 ## Tooling & DX
 
 - **Runtime:** Node 22, ESM, `"type": "module"`.
-- **Language:** TypeScript, run directly with `tsx` (no build step needed for the tooling).
-- **Tests:** `vitest`, with seed tests for the schemas, the JSON writer
-  (determinism), and the validator.
-- **Formatting:** `prettier`.
+- **Language:** TypeScript, run directly with `tsx` (no build step).
+- **Tests:** `vitest`, covering schemas, the writer's determinism, an end-to-end
+  generate against a temp data dir, and validate (pass on good data, fail on
+  corrupted data).
+- **Formatting:** `prettier`; `data/` is excluded (the writer owns its format).
 - **Package manager:** `pnpm`.
-- **Scripts (package.json):**
-  - `generate` — run the generator (`tsx src/generate.ts`)
-  - `validate` — validate committed data (`tsx src/validate.ts`)
-  - `test` — `vitest run`
-  - `typecheck` — `tsc --noEmit`
-  - `format` — `prettier --write`
+- **Scripts:** `generate`, `validate`, `test`, `typecheck`, `format`.
 
 ## Workflow (owner)
 
@@ -169,8 +200,7 @@ admin-place/
 
 - A fresh clone, after `pnpm install`, can run `pnpm generate` and produce a
   valid `data/` tree from the sample source.
-- `pnpm validate` passes on the generated data and fails on deliberately
-  corrupted data.
+- `pnpm validate` passes on generated data and fails on deliberately corrupted data.
 - Re-running `pnpm generate` with unchanged source input produces a byte-identical
   `data/` tree (no spurious diffs).
 - Adding a field to an entity requires editing only its Zod schema.
@@ -179,5 +209,6 @@ admin-place/
 
 - Real data source(s) — owner-implemented later.
 - Optional CSV/NDJSON outputs — deferred.
+- Finer locality sharding (by ADM2) — deferred until needed.
 - Publishing one or more packages (JS, Python, …) — deferred; the layout leaves
   room to add this without restructuring `data/`.

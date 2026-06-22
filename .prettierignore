@@ -1,0 +1,6 @@
+# The JSON writer owns the formatting of generated data — do not let Prettier touch it.
+data/
+node_modules/
+dist/
+coverage/
+pnpm-lock.yaml

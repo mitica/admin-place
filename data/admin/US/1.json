@@ -1,0 +1,14 @@
+[
+  {
+    "id": "US.CA",
+    "level": 1,
+    "name": "California",
+    "parentId": "US"
+  },
+  {
+    "id": "US.TX",
+    "level": 1,
+    "name": "Texas",
+    "parentId": "US"
+  }
+]
