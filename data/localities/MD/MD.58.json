@@ -1,0 +1,211 @@
+[
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617053",
+    "id": "617053",
+    "lat": 46.83,
+    "lng": 29.564,
+    "name": "Tiraspolul Nou",
+    "parentId": "MD.58",
+    "population": 2200
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPLA",
+    "geonameId": "617239",
+    "id": "617239",
+    "lat": 46.84275,
+    "lng": 29.6284,
+    "name": "Tiraspol",
+    "parentId": "MD.58",
+    "population": 157000
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617381",
+    "id": "617381",
+    "lat": 46.72927,
+    "lng": 29.70446,
+    "name": "Slobozia",
+    "parentId": "MD.58",
+    "population": 15356
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617486",
+    "id": "617486",
+    "lat": 47.76817,
+    "lng": 29.01,
+    "name": "Rîbniţa",
+    "parentId": "MD.58",
+    "population": 55455
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617582",
+    "id": "617582",
+    "lat": 47.95977,
+    "lng": 29.16068,
+    "name": "Plopi",
+    "parentId": "MD.58",
+    "population": 1277
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617602",
+    "id": "617602",
+    "lat": 46.73253,
+    "lng": 29.9617,
+    "name": "Pervomaisc",
+    "parentId": "MD.58",
+    "population": 7300
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617660",
+    "id": "617660",
+    "lat": 48.13278,
+    "lng": 28.63558,
+    "name": "Ocniţa",
+    "parentId": "MD.58",
+    "population": 815
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617712",
+    "id": "617712",
+    "lat": 46.76726,
+    "lng": 29.95757,
+    "name": "Novocotovsc",
+    "parentId": "MD.58",
+    "population": 482
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617714",
+    "id": "617714",
+    "lat": 47.33056,
+    "lng": 29.34722,
+    "name": "Comisarovca Nouă",
+    "parentId": "MD.58",
+    "population": 1059
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617763",
+    "id": "617763",
+    "lat": 46.59694,
+    "lng": 29.93763,
+    "name": "Nezavertailovca",
+    "parentId": "MD.58",
+    "population": 4742
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617830",
+    "id": "617830",
+    "lat": 47.23727,
+    "lng": 29.38498,
+    "name": "Maiac",
+    "parentId": "MD.58",
+    "population": 1500
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617879",
+    "id": "617879",
+    "lat": 47.24302,
+    "lng": 29.18722,
+    "name": "Lunga",
+    "parentId": "MD.58",
+    "population": 3217
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617973",
+    "id": "617973",
+    "lat": 46.643,
+    "lng": 29.823,
+    "name": "Crasnoe",
+    "parentId": "MD.58",
+    "population": 4200
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "618234",
+    "id": "618234",
+    "lat": 47.15413,
+    "lng": 29.30008,
+    "name": "Hryhoriopol",
+    "parentId": "MD.58",
+    "population": 9456
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "618365",
+    "id": "618365",
+    "lat": 47.26562,
+    "lng": 29.16667,
+    "name": "Dubăsari",
+    "parentId": "MD.58",
+    "population": 23254
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "618387",
+    "id": "618387",
+    "lat": 46.624,
+    "lng": 29.906,
+    "name": "Dnestrovsc",
+    "parentId": "MD.58",
+    "population": 10426
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "618453",
+    "id": "618453",
+    "lat": 48.03233,
+    "lng": 28.69899,
+    "name": "Camenca",
+    "parentId": "MD.58",
+    "population": 11072
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "618556",
+    "id": "618556",
+    "lat": 46.88754,
+    "lng": 29.64651,
+    "name": "Blijnii Hutor",
+    "parentId": "MD.58",
+    "population": 7292
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "824140",
+    "id": "824140",
+    "lat": 46.7061,
+    "lng": 29.67405,
+    "name": "Cremenciug",
+    "parentId": "MD.58",
+    "population": 1094
+  }
+]

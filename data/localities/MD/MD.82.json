@@ -1,0 +1,24 @@
+[
+  {
+    "featureClass": "P",
+    "featureCode": "PPLA",
+    "geonameId": "617638",
+    "id": "617638",
+    "lat": 47.38503,
+    "lng": 28.82535,
+    "name": "Orhei",
+    "parentId": "MD.82",
+    "population": 24918
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "618465",
+    "id": "618465",
+    "lat": 47.30161,
+    "lng": 28.96727,
+    "name": "Butuceni",
+    "parentId": "MD.82",
+    "population": 239
+  }
+]

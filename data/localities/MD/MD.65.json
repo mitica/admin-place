@@ -1,0 +1,35 @@
+[
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617081",
+    "id": "617081",
+    "lat": 46.4252,
+    "lng": 28.42676,
+    "name": "Iargara",
+    "parentId": "MD.65",
+    "population": 5600
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617118",
+    "id": "617118",
+    "lat": 46.3326,
+    "lng": 28.44797,
+    "name": "Vişniovca",
+    "parentId": "MD.65",
+    "population": 1800
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPLA",
+    "geonameId": "618452",
+    "id": "618452",
+    "lat": 46.27749,
+    "lng": 28.20052,
+    "name": "Cantemir",
+    "parentId": "MD.65",
+    "population": 3829
+  }
+]

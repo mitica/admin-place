@@ -1,10 +1,20 @@
 [
   {
+    "geonameId": "3041565",
     "id": "AD",
-    "name": "Andorra"
+    "name": "Andorra",
+    "population": 77006
   },
   {
-    "id": "US",
-    "name": "United States"
+    "geonameId": "3042058",
+    "id": "LI",
+    "name": "Liechtenstein",
+    "population": 37910
+  },
+  {
+    "geonameId": "617790",
+    "id": "MD",
+    "name": "Moldova",
+    "population": 3545883
   }
 ]

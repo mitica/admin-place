@@ -1,0 +1,24 @@
+[
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617187",
+    "id": "617187",
+    "lat": 46.14826,
+    "lng": 28.96491,
+    "name": "Tvardița",
+    "parentId": "MD.90",
+    "population": 5800
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPLA",
+    "geonameId": "617270",
+    "id": "617270",
+    "lat": 45.90321,
+    "lng": 28.66628,
+    "name": "Taraclia",
+    "parentId": "MD.90",
+    "population": 13512
+  }
+]

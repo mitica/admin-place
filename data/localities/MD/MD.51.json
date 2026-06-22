@@ -1,0 +1,57 @@
+[
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617096",
+    "id": "617096",
+    "lat": 45.68492,
+    "lng": 28.40613,
+    "name": "Vulcăneşti",
+    "parentId": "MD.51",
+    "population": 14352
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "618404",
+    "id": "618404",
+    "lat": 46.10744,
+    "lng": 28.59303,
+    "name": "Congaz",
+    "parentId": "MD.51",
+    "population": 13406
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPLA",
+    "geonameId": "618405",
+    "id": "618405",
+    "lat": 46.29488,
+    "lng": 28.65713,
+    "name": "Comrat",
+    "parentId": "MD.51",
+    "population": 22911
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "618450",
+    "id": "618450",
+    "lat": 46.06169,
+    "lng": 28.83078,
+    "name": "Ceadîr-Lunga",
+    "parentId": "MD.51",
+    "population": 22700
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "618491",
+    "id": "618491",
+    "lat": 46.36554,
+    "lng": 28.6625,
+    "name": "Bugeac",
+    "parentId": "MD.51",
+    "population": 1800
+  }
+]

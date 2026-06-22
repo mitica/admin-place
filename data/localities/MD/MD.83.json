@@ -1,0 +1,24 @@
+[
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617471",
+    "id": "617471",
+    "lat": 47.69107,
+    "lng": 28.97458,
+    "name": "Saharna",
+    "parentId": "MD.83",
+    "population": 2365
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPLA",
+    "geonameId": "617502",
+    "id": "617502",
+    "lat": 47.74857,
+    "lng": 28.96769,
+    "name": "Rezina",
+    "parentId": "MD.83",
+    "population": 9806
+  }
+]

@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
@@ -22,7 +22,16 @@ const readJson = async (relativePath: string): Promise<unknown> =>
 
 const ids = (records: unknown): string[] => (records as { id: string }[]).map((r) => r.id);
 
-describe('generate', () => {
+const exists = async (relativePath: string): Promise<boolean> => {
+  try {
+    await stat(join(dir, relativePath));
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+describe('generate (full rebuild)', () => {
   it('writes the expected sharded files from the sample source', async () => {
     await generate({ dataDir: dir, source: new SampleSource() });
 
@@ -32,7 +41,17 @@ describe('generate', () => {
     expect(ids(await readJson('admin/AD/1.json'))).toEqual(['AD.03', 'AD.07']);
 
     expect(await readJson('localities/US/US.CA.json')).toEqual([
-      { id: '5368361', name: 'Los Angeles', parentId: 'US.CA.037' },
+      {
+        id: '5368361',
+        name: 'Los Angeles',
+        geonameId: '5368361',
+        featureClass: 'P',
+        featureCode: 'PPL',
+        population: 3898747,
+        lat: 34.05223,
+        lng: -118.24368,
+        parentId: 'US.CA.037',
+      },
     ]);
     expect(ids(await readJson('localities/US/US.TX.json'))).toEqual(['4699066']);
     expect(ids(await readJson('localities/AD/AD.07.json'))).toEqual(['3041563']);
@@ -50,11 +69,45 @@ describe('generate', () => {
     const source: Source = {
       countries: async () => [{ id: 'XX', name: 'Example' }],
       adminDivisions: async () => [],
-      localities: async () => [{ id: '1', name: 'Capital', parentId: 'XX' }],
+      localities: async () => [
+        {
+          id: '1',
+          name: 'Capital',
+          geonameId: '1',
+          featureClass: 'P',
+          featureCode: 'PPLC',
+          parentId: 'XX',
+        },
+      ],
     };
     await generate({ dataDir: dir, source });
     expect(await readJson('localities/XX/XX.json')).toEqual([
-      { id: '1', name: 'Capital', parentId: 'XX' },
+      {
+        id: '1',
+        name: 'Capital',
+        geonameId: '1',
+        featureClass: 'P',
+        featureCode: 'PPLC',
+        parentId: 'XX',
+      },
     ]);
+  });
+});
+
+describe('generate (incremental)', () => {
+  it('updates only the targeted country and upserts countries.json', async () => {
+    const source = new SampleSource();
+    await generate({ dataDir: dir, source, countryCodes: ['US'] });
+
+    // Seed an unrelated country subtree that an AD run must not touch.
+    await mkdir(join(dir, 'admin', 'ZZ'), { recursive: true });
+    await writeFile(join(dir, 'admin', 'ZZ', '1.json'), '[]\n', 'utf8');
+
+    await generate({ dataDir: dir, source, countryCodes: ['AD'] });
+
+    expect(ids(await readJson('countries.json'))).toEqual(['AD', 'US']); // upserted
+    expect(await exists('admin/US/1.json')).toBe(true); // preserved
+    expect(await exists('admin/AD/1.json')).toBe(true); // added
+    expect(await exists('admin/ZZ/1.json')).toBe(true); // untouched
   });
 });

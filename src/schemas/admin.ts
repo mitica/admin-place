@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { placeBaseShape } from './base';
+
 /** Shallowest and deepest supported administrative levels (ADM1..ADM5). */
 export const ADMIN_LEVEL_MIN = 1;
 export const ADMIN_LEVEL_MAX = 5;
@@ -10,8 +12,7 @@ export const ADMIN_LEVEL_MAX = 5;
  * ADM1 division ("US") or the parent division's id for deeper levels ("US.CA").
  */
 export const AdminDivisionSchema = z.strictObject({
-  id: z.string().min(1),
-  name: z.string().min(1),
+  ...placeBaseShape,
   level: z.number().int().min(ADMIN_LEVEL_MIN).max(ADMIN_LEVEL_MAX),
   parentId: z.string().min(1),
 });

@@ -1,0 +1,24 @@
+[
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617170",
+    "id": "617170",
+    "lat": 47.25524,
+    "lng": 29.12406,
+    "name": "Ustia",
+    "parentId": "MD.72",
+    "population": 3295
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPLA",
+    "geonameId": "618057",
+    "id": "618057",
+    "lat": 47.3017,
+    "lng": 29.11755,
+    "name": "Cocieri",
+    "parentId": "MD.72",
+    "population": 4151
+  }
+]

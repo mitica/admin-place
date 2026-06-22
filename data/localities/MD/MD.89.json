@@ -1,0 +1,35 @@
+[
+  {
+    "featureClass": "P",
+    "featureCode": "PPLA",
+    "geonameId": "617302",
+    "id": "617302",
+    "lat": 47.14216,
+    "lng": 28.60774,
+    "name": "Strășeni",
+    "parentId": "MD.89",
+    "population": 19225
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617541",
+    "id": "617541",
+    "lat": 47.12189,
+    "lng": 28.27033,
+    "name": "Dolna",
+    "parentId": "MD.89",
+    "population": 1155
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "618459",
+    "id": "618459",
+    "lat": 47.19064,
+    "lng": 28.45802,
+    "name": "Bucovăţ",
+    "parentId": "MD.89",
+    "population": 1600
+  }
+]

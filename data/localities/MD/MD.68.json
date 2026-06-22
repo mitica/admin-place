@@ -1,0 +1,24 @@
+[
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617452",
+    "id": "617452",
+    "lat": 46.61527,
+    "lng": 28.90788,
+    "name": "Satul-Nou",
+    "parentId": "MD.68",
+    "population": 1910
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPLA",
+    "geonameId": "618406",
+    "id": "618406",
+    "lat": 46.52629,
+    "lng": 28.7649,
+    "name": "Cimişlia",
+    "parentId": "MD.68",
+    "population": 12464
+  }
+]

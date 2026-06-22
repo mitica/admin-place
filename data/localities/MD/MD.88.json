@@ -1,0 +1,24 @@
+[
+  {
+    "featureClass": "P",
+    "featureCode": "PPLA",
+    "geonameId": "617284",
+    "id": "617284",
+    "lat": 46.51294,
+    "lng": 29.66223,
+    "name": "Ştefan Vodă",
+    "parentId": "MD.88",
+    "population": 7700
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617633",
+    "id": "617633",
+    "lat": 46.40861,
+    "lng": 30.09611,
+    "name": "Palanca",
+    "parentId": "MD.88",
+    "population": 2020
+  }
+]

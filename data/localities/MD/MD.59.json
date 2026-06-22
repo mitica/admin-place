@@ -1,0 +1,46 @@
+[
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617149",
+    "id": "617149",
+    "lat": 46.86606,
+    "lng": 29.46636,
+    "name": "Varniţa",
+    "parentId": "MD.59",
+    "population": 4000
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPLA",
+    "geonameId": "617702",
+    "id": "617702",
+    "lat": 46.87795,
+    "lng": 29.23503,
+    "name": "Anenii Noi",
+    "parentId": "MD.59",
+    "population": 8250
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617823",
+    "id": "617823",
+    "lat": 46.92594,
+    "lng": 29.0624,
+    "name": "Merenii Noi",
+    "parentId": "MD.59",
+    "population": 1514
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "618217",
+    "id": "618217",
+    "lat": 46.92981,
+    "lng": 29.45984,
+    "name": "Gura Bîcului",
+    "parentId": "MD.59",
+    "population": 3401
+  }
+]

@@ -1,0 +1,35 @@
+[
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617837",
+    "id": "617837",
+    "lat": 47.86897,
+    "lng": 28.24109,
+    "name": "Mărculeşti",
+    "parentId": "MD.75",
+    "population": 2400
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "618275",
+    "id": "618275",
+    "lat": 47.85482,
+    "lng": 28.37679,
+    "name": "Ghindești",
+    "parentId": "MD.75",
+    "population": 2100
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPLA",
+    "geonameId": "618329",
+    "id": "618329",
+    "lat": 47.89168,
+    "lng": 28.29339,
+    "name": "Floreşti",
+    "parentId": "MD.75",
+    "population": 16759
+  }
+]

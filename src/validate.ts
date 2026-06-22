@@ -124,6 +124,12 @@ export async function validateData(dataDir: string): Promise<string[]> {
             `${label}: "${division.id}" has level ${division.level}, expected ${expectedLevel}`,
           );
         }
+        const codeLevel = Number(division.featureCode.replace(/^ADM/, ''));
+        if (Number.isInteger(codeLevel) && codeLevel !== division.level) {
+          problems.push(
+            `${label}: "${division.id}" featureCode ${division.featureCode} disagrees with level ${division.level}`,
+          );
+        }
         index.set(division.id, division);
         divisions.push(division);
       }

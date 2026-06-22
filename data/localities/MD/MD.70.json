@@ -1,0 +1,24 @@
+[
+  {
+    "featureClass": "P",
+    "featureCode": "PPLA",
+    "geonameId": "618382",
+    "id": "618382",
+    "lat": 48.24268,
+    "lng": 27.6101,
+    "name": "Donduşeni",
+    "parentId": "MD.70",
+    "population": 9435
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "618512",
+    "id": "618512",
+    "lat": 48.35628,
+    "lng": 27.70293,
+    "name": "Briceni",
+    "parentId": "MD.70",
+    "population": 14132
+  }
+]

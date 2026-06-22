@@ -1,0 +1,35 @@
+[
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617345",
+    "id": "617345",
+    "lat": 47.6558,
+    "lng": 28.04734,
+    "name": "Bilicenii Vechi",
+    "parentId": "MD.85",
+    "population": 15479
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPLA",
+    "geonameId": "617914",
+    "id": "617914",
+    "lat": 47.63694,
+    "lng": 28.1407,
+    "name": "Sîngerei",
+    "parentId": "MD.85",
+    "population": 14600
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "830975",
+    "id": "830975",
+    "lat": 47.81353,
+    "lng": 28.07004,
+    "name": "Biruinţa",
+    "parentId": "MD.85",
+    "population": 4700
+  }
+]

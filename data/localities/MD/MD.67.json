@@ -1,0 +1,46 @@
+[
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617183",
+    "id": "617183",
+    "lat": 46.43229,
+    "lng": 29.27548,
+    "name": "Ucrainca",
+    "parentId": "MD.67",
+    "population": 1559
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617605",
+    "id": "617605",
+    "lat": 46.69857,
+    "lng": 29.09089,
+    "name": "Pervomaisc",
+    "parentId": "MD.67",
+    "population": 1306
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "618067",
+    "id": "618067",
+    "lat": 46.78296,
+    "lng": 29.61682,
+    "name": "Chiţcani",
+    "parentId": "MD.67",
+    "population": 9000
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPLA",
+    "geonameId": "618120",
+    "id": "618120",
+    "lat": 46.63738,
+    "lng": 29.41087,
+    "name": "Căuşeni",
+    "parentId": "MD.67",
+    "population": 21690
+  }
+]

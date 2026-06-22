@@ -1,17 +1,26 @@
-import { rm } from 'node:fs/promises';
-import { resolve, sep } from 'node:path';
+import { readFile, rm } from 'node:fs/promises';
+import { relative, resolve, sep } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { z } from 'zod';
 
 import { indexAdminDivisions, resolveAdm1AncestorId } from './hierarchy';
-import { DATA_DIR, adminFile, countriesFile, localitiesFile } from './paths';
+import {
+  DATA_DIR,
+  adminDir,
+  adminFile,
+  countriesFile,
+  localitiesDir,
+  localitiesFile,
+} from './paths';
 import {
   AdminDivisionSchema,
   CountrySchema,
   LocalitySchema,
   type AdminDivision,
+  type Country,
   type Locality,
 } from './schemas';
+import { GeoNamesSource } from './sources/geonames/source';
 import { SampleSource } from './sources/sample';
 import type { Source } from './sources/source';
 import { writeRecords } from './writers/json-writer';
@@ -21,6 +30,12 @@ export interface GenerateOptions {
   dataDir?: string;
   /** Where the data comes from. Defaults to the bundled sample source. */
   source?: Source;
+  /**
+   * When set, only these countries are (re)generated — their subtrees are
+   * replaced and `countries.json` is upserted, leaving other countries on disk
+   * untouched. When omitted, the whole data directory is rebuilt.
+   */
+  countryCodes?: string[];
 }
 
 /** Validate every item against `schema`, throwing a readable error on failure. */
@@ -42,6 +57,14 @@ function assertSafeToWipe(dataDir: string): void {
   }
 }
 
+/** Refuse to remove anything that is not strictly inside `dataDir`. */
+function assertSafeToWipeSubtree(dataDir: string, target: string): void {
+  const rel = relative(resolve(dataDir), resolve(target));
+  if (rel === '' || rel.startsWith('..') || rel.startsWith(sep)) {
+    throw new Error(`refusing to wipe a path outside the data dir: ${resolve(target)}`);
+  }
+}
+
 /** Group items by a derived key, preserving insertion order within each group. */
 function groupBy<T, K>(items: T[], keyOf: (item: T) => K): Map<K, T[]> {
   const groups = new Map<K, T[]>();
@@ -54,42 +77,91 @@ function groupBy<T, K>(items: T[], keyOf: (item: T) => K): Map<K, T[]> {
   return groups;
 }
 
+/** Read and validate an existing `countries.json`, or [] if absent/unreadable. */
+async function readExistingCountries(dataDir: string): Promise<Country[]> {
+  let text: string;
+  try {
+    text = await readFile(countriesFile(dataDir), 'utf8');
+  } catch {
+    return [];
+  }
+  const parsed: unknown = JSON.parse(text);
+  return parseAll(CountrySchema, Array.isArray(parsed) ? parsed : [], 'existing country');
+}
+
+/** Merge `incoming` over `existing` by id (incoming wins). */
+function upsertById<T extends { id: string }>(existing: T[], incoming: T[]): T[] {
+  const merged = new Map(existing.map((item) => [item.id, item]));
+  for (const item of incoming) merged.set(item.id, item);
+  return [...merged.values()];
+}
+
+/** Write the admin and locality subtrees for a single country. */
+async function writeCountrySubtrees(
+  dataDir: string,
+  source: Source,
+  country: Country,
+): Promise<void> {
+  const divisions = parseAll(
+    AdminDivisionSchema,
+    await source.adminDivisions(country.id),
+    `admin division (${country.id})`,
+  );
+  for (const [level, list] of groupBy(divisions, (d: AdminDivision) => d.level)) {
+    await writeRecords(adminFile(dataDir, country.id, level), list);
+  }
+
+  const index = indexAdminDivisions(divisions);
+  const localities = parseAll(
+    LocalitySchema,
+    await source.localities(country.id),
+    `locality (${country.id})`,
+  );
+  const byAncestor = groupBy(localities, (loc: Locality) =>
+    resolveAdm1AncestorId(loc.parentId, index, country.id),
+  );
+  for (const [adm1Id, list] of byAncestor) {
+    await writeRecords(localitiesFile(dataDir, country.id, adm1Id), list);
+  }
+}
+
 /**
- * Build the full `data/` tree from a source. Wipes the data directory first so
- * the result is a clean, deterministic full regeneration with no stale files.
+ * Build the `data/` tree from a source. With `countryCodes`, only those
+ * countries are replaced (incremental); otherwise the whole tree is rebuilt.
+ * Output is deterministic, so unchanged input yields no diff.
  */
 export async function generate(options: GenerateOptions = {}): Promise<void> {
   const dataDir = options.dataDir ?? DATA_DIR;
   const source = options.source ?? new SampleSource();
-
-  assertSafeToWipe(dataDir);
-  await rm(dataDir, { recursive: true, force: true });
+  const incremental = options.countryCodes !== undefined && options.countryCodes.length > 0;
 
   const countries = parseAll(CountrySchema, await source.countries(), 'country');
-  await writeRecords(countriesFile(dataDir), countries);
 
-  for (const country of countries) {
-    const divisions = parseAll(
-      AdminDivisionSchema,
-      await source.adminDivisions(country.id),
-      `admin division (${country.id})`,
-    );
-    for (const [level, list] of groupBy(divisions, (d: AdminDivision) => d.level)) {
-      await writeRecords(adminFile(dataDir, country.id, level), list);
+  if (!incremental) {
+    assertSafeToWipe(dataDir);
+    await rm(dataDir, { recursive: true, force: true });
+    await writeRecords(countriesFile(dataDir), countries);
+    for (const country of countries) {
+      await writeCountrySubtrees(dataDir, source, country);
     }
+    return;
+  }
 
-    const index = indexAdminDivisions(divisions);
-    const localities = parseAll(
-      LocalitySchema,
-      await source.localities(country.id),
-      `locality (${country.id})`,
-    );
-    const byAncestor = groupBy(localities, (loc: Locality) =>
-      resolveAdm1AncestorId(loc.parentId, index, country.id),
-    );
-    for (const [adm1Id, list] of byAncestor) {
-      await writeRecords(localitiesFile(dataDir, country.id, adm1Id), list);
+  const requested = new Set(options.countryCodes);
+  const targets = countries.filter((country) => requested.has(country.id));
+  const missing = [...requested].filter((code) => !targets.some((c) => c.id === code));
+  if (missing.length > 0) {
+    throw new Error(`source did not provide requested countries: ${missing.join(', ')}`);
+  }
+
+  const merged = upsertById(await readExistingCountries(dataDir), targets);
+  await writeRecords(countriesFile(dataDir), merged);
+  for (const country of targets) {
+    for (const dir of [adminDir(dataDir, country.id), localitiesDir(dataDir, country.id)]) {
+      assertSafeToWipeSubtree(dataDir, dir);
+      await rm(dir, { recursive: true, force: true });
     }
+    await writeCountrySubtrees(dataDir, source, country);
   }
 }
 
@@ -101,9 +173,25 @@ function isMain(moduleUrl: string): boolean {
 }
 
 if (isMain(import.meta.url)) {
-  generate()
+  const codes = process.argv.slice(2).map((code) => code.toUpperCase());
+  const invalid = codes.filter((code) => !/^[A-Z]{2}$/.test(code));
+  if (invalid.length > 0) {
+    console.error(`invalid country code(s): ${invalid.join(', ')} (expected ISO 3166-1 alpha-2)`);
+    process.exit(1);
+  }
+
+  const run =
+    codes.length > 0
+      ? generate({ source: new GeoNamesSource({ countryCodes: codes }), countryCodes: codes })
+      : generate();
+
+  run
     .then(() => {
-      console.log(`Generated data into ${DATA_DIR}`);
+      console.log(
+        codes.length > 0
+          ? `Generated ${codes.join(', ')} into ${DATA_DIR}`
+          : `Generated data into ${DATA_DIR}`,
+      );
     })
     .catch((error: unknown) => {
       console.error(error instanceof Error ? error.message : error);

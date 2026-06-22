@@ -1,0 +1,35 @@
+[
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617926",
+    "id": "617926",
+    "lat": 45.53914,
+    "lng": 28.1709,
+    "name": "Cîşliţa-Prut",
+    "parentId": "MD.64",
+    "population": 1104
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "618349",
+    "id": "618349",
+    "lat": 45.48167,
+    "lng": 28.19722,
+    "name": "Giurgiuleşti",
+    "parentId": "MD.64",
+    "population": 3074
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPLA",
+    "geonameId": "618456",
+    "id": "618456",
+    "lat": 45.90456,
+    "lng": 28.19516,
+    "name": "Cahul",
+    "parentId": "MD.64",
+    "population": 34492
+  }
+]

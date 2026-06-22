@@ -1,0 +1,35 @@
+[
+  {
+    "featureClass": "P",
+    "featureCode": "PPLL",
+    "geonameId": "617578",
+    "id": "617578",
+    "lat": 46.69249,
+    "lng": 28.23192,
+    "name": "Pogăneşti",
+    "parentId": "MD.77",
+    "population": 1462
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPLA",
+    "geonameId": "617993",
+    "id": "617993",
+    "lat": 46.83089,
+    "lng": 28.58999,
+    "name": "Hînceşti",
+    "parentId": "MD.77",
+    "population": 16900
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "618400",
+    "id": "618400",
+    "lat": 46.75818,
+    "lng": 28.20716,
+    "name": "Dancu",
+    "parentId": "MD.77",
+    "population": 10000
+  }
+]

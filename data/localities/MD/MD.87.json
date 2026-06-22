@@ -1,0 +1,24 @@
+[
+  {
+    "featureClass": "P",
+    "featureCode": "PPLA",
+    "geonameId": "617367",
+    "id": "617367",
+    "lat": 48.15659,
+    "lng": 28.28489,
+    "name": "Soroca",
+    "parentId": "MD.87",
+    "population": 27423
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617968",
+    "id": "617968",
+    "lat": 48.27567,
+    "lng": 28.08459,
+    "name": "Cremenciug",
+    "parentId": "MD.87",
+    "population": 390
+  }
+]

@@ -1,0 +1,101 @@
+[
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617164",
+    "id": "617164",
+    "lat": 47.09009,
+    "lng": 29.0757,
+    "name": "Vadul lui Vodă",
+    "parentId": "MD.57",
+    "population": 5300
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617279",
+    "id": "617279",
+    "lat": 46.91557,
+    "lng": 28.96673,
+    "name": "Sîngera",
+    "parentId": "MD.57",
+    "population": 7200
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617317",
+    "id": "617317",
+    "lat": 47.09643,
+    "lng": 28.86791,
+    "name": "Stăuceni",
+    "parentId": "MD.57",
+    "population": 5700
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617965",
+    "id": "617965",
+    "lat": 47.13835,
+    "lng": 28.86156,
+    "name": "Cricova",
+    "parentId": "MD.57",
+    "population": 7400
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "618054",
+    "id": "618054",
+    "lat": 46.97648,
+    "lng": 28.819,
+    "name": "Codru",
+    "parentId": "MD.57",
+    "population": 15934
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "618356",
+    "id": "618356",
+    "lat": 47.02156,
+    "lng": 28.76303,
+    "name": "Durleşti",
+    "parentId": "MD.57",
+    "population": 26308
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPLC",
+    "geonameId": "618426",
+    "id": "618426",
+    "lat": 47.00902,
+    "lng": 28.85938,
+    "name": "Chisinau",
+    "parentId": "MD.57",
+    "population": 635994
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "824134",
+    "id": "824134",
+    "lat": 47.0746,
+    "lng": 28.73685,
+    "name": "Vatra",
+    "parentId": "MD.57",
+    "population": 3800
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "824153",
+    "id": "824153",
+    "lat": 47.13,
+    "lng": 28.88937,
+    "name": "Ciorescu",
+    "parentId": "MD.57",
+    "population": 6870
+  }
+]

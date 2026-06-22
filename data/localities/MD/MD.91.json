@@ -1,0 +1,24 @@
+[
+  {
+    "featureClass": "P",
+    "featureCode": "PPLA",
+    "geonameId": "617254",
+    "id": "617254",
+    "lat": 47.50179,
+    "lng": 28.36478,
+    "name": "Teleneşti",
+    "parentId": "MD.91",
+    "population": 6633
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617778",
+    "id": "617778",
+    "lat": 47.50525,
+    "lng": 28.27687,
+    "name": "Mîndreşti",
+    "parentId": "MD.91",
+    "population": 9280
+  }
+]

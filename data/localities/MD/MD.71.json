@@ -1,0 +1,35 @@
+[
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "617569",
+    "id": "617569",
+    "lat": 48.08806,
+    "lng": 28.02556,
+    "name": "Popeştii de Sus",
+    "parentId": "MD.71",
+    "population": 1463
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "618267",
+    "id": "618267",
+    "lat": 48.04647,
+    "lng": 27.76474,
+    "name": "Ţarigrad",
+    "parentId": "MD.71",
+    "population": 4655
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPLA",
+    "geonameId": "618370",
+    "id": "618370",
+    "lat": 48.03686,
+    "lng": 27.81242,
+    "name": "Drochia",
+    "parentId": "MD.71",
+    "population": 16080
+  }
+]

@@ -1,0 +1,24 @@
+[
+  {
+    "featureClass": "P",
+    "featureCode": "PPLA",
+    "geonameId": "617659",
+    "id": "617659",
+    "lat": 48.38231,
+    "lng": 27.43864,
+    "name": "Ocniţa",
+    "parentId": "MD.81",
+    "population": 9325
+  },
+  {
+    "featureClass": "P",
+    "featureCode": "PPL",
+    "geonameId": "618631",
+    "id": "618631",
+    "lat": 48.43285,
+    "lng": 27.79912,
+    "name": "Otaci",
+    "parentId": "MD.81",
+    "population": 8400
+  }
+]
